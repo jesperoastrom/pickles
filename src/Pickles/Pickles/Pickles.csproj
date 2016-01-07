@@ -146,6 +146,7 @@
     <Compile Include="DocumentationBuilders\JSON\JsonTable.cs" />
     <Compile Include="DocumentationBuilders\JSON\JsonTableRow.cs" />
     <Compile Include="DocumentationBuilders\JSON\JsonTestResult.cs" />
+    <Compile Include="DocumentationBuilders\Markdown\MarkdownDocumentationBuilder.cs" />
     <Compile Include="DocumentationBuilders\Word\TableOfContentsAdder\PtOpenXmlUtil.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -338,6 +339,9 @@
     <EmbeddedResource Include="..\Pickles.BaseDhtmlFiles\pickledFeatures.js">
       <Link>Resources\Dhtml\pickledFeatures.js</Link>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DocumentationBuilders\MD\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

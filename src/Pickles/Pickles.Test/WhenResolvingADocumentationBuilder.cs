@@ -25,6 +25,7 @@ using NUnit.Framework;
 using PicklesDoc.Pickles.DocumentationBuilders;
 using PicklesDoc.Pickles.DocumentationBuilders.Excel;
 using PicklesDoc.Pickles.DocumentationBuilders.HTML;
+using PicklesDoc.Pickles.DocumentationBuilders.Markdown;
 using PicklesDoc.Pickles.DocumentationBuilders.Word;
 
 namespace PicklesDoc.Pickles.Test
@@ -100,6 +101,22 @@ namespace PicklesDoc.Pickles.Test
             Check.That(item1).IsInstanceOf<ExcelDocumentationBuilder>();
             Check.That(item2).IsNotNull();
             Check.That(item2).IsInstanceOf<ExcelDocumentationBuilder>();
+            Check.That(item1).IsSameReferenceThan(item2);
+        }
+
+        [Test]
+        public void ThenCanResolveIDocumentationBuilderAsMarkdownDocumentationBuilderAsSingletonIfTheUserSelectsMarkdownOutput()
+        {
+            var configuration = Container.Resolve<Configuration>();
+            configuration.DocumentationFormat = DocumentationFormat.Markdown;
+
+            var item1 = Container.Resolve<IDocumentationBuilder>();
+            var item2 = Container.Resolve<IDocumentationBuilder>();
+
+            Check.That(item1).IsNotNull();
+            Check.That(item1).IsInstanceOf<MarkdownDocumentationBuilder>();
+            Check.That(item2).IsNotNull();
+            Check.That(item2).IsInstanceOf<MarkdownDocumentationBuilder>();
             Check.That(item1).IsSameReferenceThan(item2);
         }
     }
