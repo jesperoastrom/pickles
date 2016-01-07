@@ -26,6 +26,7 @@ using PicklesDoc.Pickles.DocumentationBuilders.DHTML;
 using PicklesDoc.Pickles.DocumentationBuilders.Excel;
 using PicklesDoc.Pickles.DocumentationBuilders.HTML;
 using PicklesDoc.Pickles.DocumentationBuilders.JSON;
+using PicklesDoc.Pickles.DocumentationBuilders.Markdown;
 using PicklesDoc.Pickles.DocumentationBuilders.Word;
 using PicklesDoc.Pickles.TestFrameworks;
 
@@ -46,6 +47,7 @@ namespace PicklesDoc.Pickles
             builder.RegisterType<JsonDocumentationBuilder>().SingleInstance();
             builder.RegisterType<ExcelDocumentationBuilder>().SingleInstance();
             builder.RegisterType<DhtmlDocumentationBuilder>().SingleInstance();
+            builder.RegisterType<MarkdownDocumentationBuilder>().SingleInstance();
 
             builder.Register<IDocumentationBuilder>(c =>
             {
@@ -62,6 +64,8 @@ namespace PicklesDoc.Pickles
                         return c.Resolve<ExcelDocumentationBuilder>();
                     case DocumentationFormat.DHtml:
                         return c.Resolve<DhtmlDocumentationBuilder>();
+                    case DocumentationFormat.Markdown:
+                        return c.Resolve<MarkdownDocumentationBuilder>();
                     default:
                         return c.Resolve<HtmlDocumentationBuilder>();
                 }
