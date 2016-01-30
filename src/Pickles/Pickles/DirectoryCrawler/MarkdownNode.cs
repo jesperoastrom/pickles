@@ -28,15 +28,22 @@ namespace PicklesDoc.Pickles.DirectoryCrawler
 {
     public class MarkdownNode : INode
     {
-        public MarkdownNode(FileSystemInfoBase location, string relativePathFromRoot, XElement markdownContent)
+        public MarkdownNode(
+            FileSystemInfoBase location,
+            string relativePathFromRoot,
+            XElement markdownContent,
+            string markdownOriginalContent)
         {
             this.OriginalLocation = location;
             this.OriginalLocationUrl = location.ToUri();
             this.RelativePathFromRoot = relativePathFromRoot;
             this.MarkdownContent = markdownContent;
+            this.MarkdownOriginalContent = markdownOriginalContent;
         }
 
         public XElement MarkdownContent { get; }
+
+        public string MarkdownOriginalContent { get; }
 
         public NodeType NodeType
         {

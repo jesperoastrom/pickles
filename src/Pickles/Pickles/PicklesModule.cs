@@ -27,7 +27,9 @@ using PicklesDoc.Pickles.DocumentationBuilders.Excel;
 using PicklesDoc.Pickles.DocumentationBuilders.HTML;
 using PicklesDoc.Pickles.DocumentationBuilders.JSON;
 using PicklesDoc.Pickles.DocumentationBuilders.Markdown;
+using PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters;
 using PicklesDoc.Pickles.DocumentationBuilders.Word;
+using PicklesDoc.Pickles.IO;
 using PicklesDoc.Pickles.TestFrameworks;
 
 namespace PicklesDoc.Pickles
@@ -48,6 +50,9 @@ namespace PicklesDoc.Pickles
             builder.RegisterType<ExcelDocumentationBuilder>().SingleInstance();
             builder.RegisterType<DhtmlDocumentationBuilder>().SingleInstance();
             builder.RegisterType<MarkdownDocumentationBuilder>().SingleInstance();
+            builder.RegisterType<MarkdownDataNodeWriter>().Keyed<IMarkdownNodeWriter>(NodeType.Data).SingleInstance();
+            builder.RegisterType<MarkdownContentNodeWriter>().Keyed<IMarkdownNodeWriter>(NodeType.Content).SingleInstance();
+            builder.RegisterType<MarkdownStructureNodeWriter>().Keyed<IMarkdownNodeWriter>(NodeType.Structure).SingleInstance();
 
             builder.Register<IDocumentationBuilder>(c =>
             {
@@ -105,6 +110,8 @@ namespace PicklesDoc.Pickles
             builder.RegisterType<HtmlDocumentFormatter>().SingleInstance();
             builder.RegisterType<HtmlFeatureFormatter>().As<IHtmlFeatureFormatter>().SingleInstance();
             builder.RegisterType<MarkdownProvider>().SingleInstance();
+
+            builder.RegisterType<FileStreamWriterFactory>().As<IStreamWriterFactory>().SingleInstance();
         }
     }
 }

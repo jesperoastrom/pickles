@@ -18,10 +18,13 @@
 //  </copyright>
 //  --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
 using System.Reflection;
+using Autofac.Features.Indexed;
 using NGenerics.DataStructures.Trees;
 using NLog;
 using PicklesDoc.Pickles.DirectoryCrawler;
+using PicklesDoc.Pickles.Extensions;
 
 namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown
 {
@@ -30,10 +33,14 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown
         private static readonly Logger Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType.Name);
 
         private readonly Configuration configuration;
+        private readonly IIndex<NodeType, IMarkdownNodeWriter> nodeWriters;
 
-        public MarkdownDocumentationBuilder(Configuration configuration)
+        public MarkdownDocumentationBuilder(
+            Configuration configuration,
+            IIndex<NodeType, IMarkdownNodeWriter> nodeWriters)
         {
             this.configuration = configuration;
+            this.nodeWriters = nodeWriters;
         }
 
         #region IDocumentationBuilder Members
@@ -43,6 +50,44 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown
             if (Log.IsInfoEnabled)
             {
                 Log.Info("Writing Markdown to {0}", this.configuration.OutputFolder.FullName);
+            }
+
+            this.VisitNode(features);
+        }
+
+        private void VisitNode(GeneralTree<INode> tree)
+        {
+            if (tree == null)
+            {
+                return;
+            }
+
+            this.CreateDocumentationForCurrentNode(tree);
+
+            this.VisitChildNodes(tree);
+        }
+
+        private void CreateDocumentationForCurrentNode(GeneralTree<INode> tree)
+        {
+            INode currentNode = tree.Data;
+            IMarkdownNodeWriter nodeWriter;
+
+            if (this.nodeWriters.TryGetValue(currentNode.NodeType,  out nodeWriter))
+            {
+                nodeWriter.WriteNode(tree);
+            }
+        }
+
+        private void VisitChildNodes(GeneralTree<INode> tree)
+        {
+            GeneralTree<INode>[] childNodesExceptReadme = tree
+                .ChildNodes
+                .Where(x => x.Data.IsIndexMarkDownNode() == false)
+                .ToArray();
+
+            foreach (GeneralTree<INode> subtree in childNodesExceptReadme)
+            {
+                this.VisitNode(subtree);
             }
         }
 

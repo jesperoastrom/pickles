@@ -19,6 +19,7 @@
 //  --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.IO.Abstractions;
 using PicklesDoc.Pickles.DirectoryCrawler;
 
 namespace PicklesDoc.Pickles.Extensions
@@ -35,6 +36,11 @@ namespace PicklesDoc.Pickles.Extensions
             }
 
             return false;
+        }
+
+        public static string GetOutputPath(this INode node, IFileSystem fileSystem, Configuration configuration)
+        {
+            return fileSystem.Path.Combine(configuration.OutputFolder.FullName, node.RelativePathFromRoot);
         }
     }
 }

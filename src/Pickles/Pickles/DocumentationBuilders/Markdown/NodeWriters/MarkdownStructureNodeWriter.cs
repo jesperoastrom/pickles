@@ -1,0 +1,95 @@
+using System.IO;
+using System.IO.Abstractions;
+using System.Linq;
+using NGenerics.DataStructures.Trees;
+using PicklesDoc.Pickles.DirectoryCrawler;
+using PicklesDoc.Pickles.Extensions;
+using PicklesDoc.Pickles.IO;
+
+namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
+{
+    public class MarkdownStructureNodeWriter : IMarkdownNodeWriter
+    {
+        private readonly Configuration configuration;
+        private readonly IFileSystem fileSystem;
+        private readonly IStreamWriterFactory streamWriterFactory;
+
+        public MarkdownStructureNodeWriter(
+            Configuration configuration,
+            IFileSystem fileSystem,
+            IStreamWriterFactory streamWriterFactory)
+        {
+            this.configuration = configuration;
+            this.fileSystem = fileSystem;
+            this.streamWriterFactory = streamWriterFactory;
+        }
+
+        public void WriteNode(GeneralTree<INode> tree)
+        {
+            string outputPath = tree.Data.GetOutputPath(this.fileSystem, this.configuration);
+            string markdownFilePath = this.fileSystem.Path.Combine(outputPath, MarkdownFilenames.Index);
+
+            this.fileSystem.Directory.CreateDirectory(outputPath);
+
+            using (var writer = this.streamWriterFactory.Create(markdownFilePath))
+            {
+                tree.WriteBreadcrums(writer);
+                WriteChildLinks(tree, writer);
+                WriteCustomIndexMarkdown(tree, writer);
+                writer.Close();
+            }
+        }
+
+        private static void WriteCustomIndexMarkdown(GeneralTree<INode> tree, StreamWriter writer)
+        {
+            var readMeNodes = tree
+                .ChildNodes
+                .Where(x => x.Data.IsIndexMarkDownNode())
+                .Select(x => x.Data)
+                .Cast<MarkdownNode>()
+                .ToArray();
+
+            foreach (MarkdownNode markdownNode in readMeNodes)
+            {
+                writer.Write(markdownNode.MarkdownOriginalContent);
+            }
+        }
+
+        private static void WriteChildLinks(GeneralTree<INode> tree, StreamWriter writer)
+        {
+            foreach (GeneralTree<INode> childTree in tree.ChildNodes.OrderBy(x => x.Data.Name))
+            {
+                if (childTree.Data.IsIndexMarkDownNode() == false)
+                {
+                    WriteChildLink(writer, childTree);
+                }
+            }
+        }
+
+        private static void WriteChildLink(StreamWriter writer, GeneralTree<INode> childTree)
+        {
+            INode node = childTree.Data;
+            if (node.NodeType == NodeType.Structure)
+            {
+                WriteStructureChildLink(writer, childTree);
+            }
+            else
+            {
+                WriteNonStructureChildLink(writer, childTree);
+            }
+        }
+
+        private static void WriteNonStructureChildLink(StreamWriter writer, GeneralTree<INode> childTree)
+        {
+            INode node = childTree.Data;
+            string nodeNameAndExtension = node.GetOriginalNameAndExtension();
+            writer.WriteLine($"* [{node.Name}]({nodeNameAndExtension})");
+        }
+
+        private static void WriteStructureChildLink(StreamWriter writer, GeneralTree<INode> childTree)
+        {
+            INode node = childTree.Data;
+            writer.WriteLine($"* [{node.Name}]({node.OriginalLocation.Name}\\{MarkdownFilenames.Index})");
+        }
+    }
+}

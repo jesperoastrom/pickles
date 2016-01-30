@@ -65,8 +65,9 @@ namespace PicklesDoc.Pickles.DirectoryCrawler
             }
             else if (this.relevantFileDetector.IsMarkdownFile(file))
             {
-                XElement markdownContent = this.htmlMarkdownFormatter.Format(this.fileSystem.File.ReadAllText(file.FullName));
-                return new MarkdownNode(file, relativePathFromRoot, markdownContent);
+                string markdownOriginalContent = this.fileSystem.File.ReadAllText(file.FullName);
+                XElement markdownContent = this.htmlMarkdownFormatter.Format(markdownOriginalContent);
+                return new MarkdownNode(file, relativePathFromRoot, markdownContent, markdownOriginalContent);
             }
             else if (this.relevantFileDetector.IsImageFile(file))
             {
