@@ -18,17 +18,73 @@
 //  </copyright>
 //  --------------------------------------------------------------------------------------------------------------------
 
+using System;
 using System.IO;
 using PicklesDoc.Pickles.DirectoryCrawler;
+using PicklesDoc.Pickles.ObjectModel;
 
 namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
 {
     public class MarkdownFeatureNodeWriter
     {
-        public void Write(FeatureNode featureNode, StreamWriter writer)
+        private readonly MarkdownFeatureTitleWriter titleWriter;
+        private readonly MarkdownFeatureTagsWriter tagsWriter;
+        private readonly MarkdownDescriptionWriter descriptionWriter;
+        private readonly MarkdownFeatureScenarioWriter scenarioWriter;
+        private readonly MarkdownFeatureScenarioOutlineWriter scenarioOutlineWriter;
+
+        public MarkdownFeatureNodeWriter(
+            MarkdownFeatureTitleWriter titleWriter,
+            MarkdownFeatureTagsWriter tagsWriter,
+            MarkdownDescriptionWriter descriptionWriter,
+            MarkdownFeatureScenarioWriter scenarioWriter,
+            MarkdownFeatureScenarioOutlineWriter scenarioOutlineWriter)
         {
-            writer.WriteLine(featureNode.Feature.Name);
-            writer.WriteLine("todo");
+            this.titleWriter = titleWriter;
+            this.tagsWriter = tagsWriter;
+            this.descriptionWriter = descriptionWriter;
+            this.scenarioWriter = scenarioWriter;
+            this.scenarioOutlineWriter = scenarioOutlineWriter;
+        }
+
+        public void Write(StreamWriter writer, FeatureNode featureNode)
+        {
+            if (featureNode == null)
+            {
+                throw new ArgumentNullException(nameof(featureNode));
+            }
+
+            Feature feature = featureNode.Feature;
+
+            if (feature == null)
+            {
+                throw new ArgumentNullException(nameof(feature));
+            }
+
+            this.titleWriter.Write(writer, feature.Name);
+            this.tagsWriter.Write(writer, feature.Tags);
+            this.descriptionWriter.Write(writer, feature.Description);
+            if (feature.Background != null)
+            {
+                writer.WriteLine("### Background");
+                this.scenarioWriter.Write(writer, feature.Background);
+            }
+
+            foreach (var featureElement in feature.FeatureElements)
+            {
+                var scenario = featureElement as Scenario;
+                if (scenario != null)
+                {
+                    this.scenarioWriter.Write(writer, scenario);
+                    continue;
+                }
+
+                var scenarioOutline = featureElement as ScenarioOutline;
+                if (scenarioOutline != null)
+                {
+                    this.scenarioOutlineWriter.Write(writer, scenarioOutline);
+                }
+            }
         }
     }
 }

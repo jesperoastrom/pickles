@@ -31,15 +31,24 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
         private readonly Configuration configuration;
         private readonly IFileSystem fileSystem;
         private readonly IStreamWriterFactory streamWriterFactory;
+        private readonly MarkdownBreadcrumsWriter breadcrumsWriter;
+        private readonly MarkdownMarkdownNodeWriter markdownNodeWriter;
+        private readonly MarkdownFeatureNodeWriter featureNodeWriter;
 
         public MarkdownContentNodeWriter(
             Configuration configuration,
             IFileSystem fileSystem,
-            IStreamWriterFactory streamWriterFactory)
+            IStreamWriterFactory streamWriterFactory,
+            MarkdownBreadcrumsWriter breadcrumsWriter,
+            MarkdownMarkdownNodeWriter markdownNodeWriter,
+            MarkdownFeatureNodeWriter featureNodeWriter)
         {
             this.configuration = configuration;
             this.fileSystem = fileSystem;
             this.streamWriterFactory = streamWriterFactory;
+            this.breadcrumsWriter = breadcrumsWriter;
+            this.markdownNodeWriter = markdownNodeWriter;
+            this.featureNodeWriter = featureNodeWriter;
         }
 
         public void WriteNode(GeneralTree<INode> tree)
@@ -47,19 +56,19 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
             string outputPath = tree.Data.GetMarkdownFilePath(this.fileSystem, this.configuration);
             using (var writer = this.streamWriterFactory.Create(outputPath))
             {
-                tree.WriteBreadcrums(writer);
+                this.breadcrumsWriter.Write(writer, tree);
 
                 var markdownNode = tree.Data as MarkdownNode;
                 if (markdownNode != null)
                 {
-                    new MarkdownMarkdownNodeWriter().Write(markdownNode, writer);
+                    this.markdownNodeWriter.Write(writer, markdownNode);
                     return;
                 }
 
                 var featureNode = tree.Data as FeatureNode;
                 if (featureNode != null)
                 {
-                    new MarkdownFeatureNodeWriter().Write(featureNode, writer);
+                    this.featureNodeWriter.Write(writer, featureNode);
                     return;
                 }
 

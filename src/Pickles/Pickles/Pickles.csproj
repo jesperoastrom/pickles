@@ -147,15 +147,23 @@
     <Compile Include="DocumentationBuilders\JSON\JsonTableRow.cs" />
     <Compile Include="DocumentationBuilders\JSON\JsonTestResult.cs" />
     <Compile Include="DocumentationBuilders\Markdown\IMarkdownNodeWriter.cs" />
+    <Compile Include="DocumentationBuilders\Markdown\NodeWriters\MarkdownBreadcrumsWriter.cs" />
+    <Compile Include="DocumentationBuilders\Markdown\NodeWriters\MarkdownFeatureScenarioOUtlineWriter.cs" />
+    <Compile Include="DocumentationBuilders\Markdown\NodeWriters\MarkdownFeatureScenarioWriter.cs" />
+    <Compile Include="DocumentationBuilders\Markdown\NodeWriters\MarkdownDescriptionWriter.cs" />
+    <Compile Include="DocumentationBuilders\Markdown\NodeWriters\MarkdownFeatureTitleWriter.cs" />
     <Compile Include="DocumentationBuilders\Markdown\NodeWriters\MarkdownContentNodeWriter.cs" />
     <Compile Include="DocumentationBuilders\Markdown\NodeWriters\MarkdownDataNodeWriter.cs" />
     <Compile Include="DocumentationBuilders\Markdown\MarkdownDocumentationBuilder.cs" />
     <Compile Include="DocumentationBuilders\Markdown\NodeWriters\MarkdownFeatureNodeWriter.cs" />
+    <Compile Include="DocumentationBuilders\Markdown\NodeWriters\MarkdownFeatureTagsWriter.cs" />
     <Compile Include="DocumentationBuilders\Markdown\NodeWriters\MarkdownFileNames.cs" />
     <Compile Include="DocumentationBuilders\Markdown\NodeWriters\MarkdownMarkdownNodeWriter.cs" />
-    <Compile Include="DocumentationBuilders\Markdown\NodeWriters\MarkdownNodeExtensions.cs" />
+    <Compile Include="DocumentationBuilders\Markdown\NodeWriters\MarkdownStepWriter.cs" />
     <Compile Include="DocumentationBuilders\Markdown\NodeWriters\MarkdownStructureNodeWriter.cs" />
     <Compile Include="DocumentationBuilders\Markdown\MarkdownTreeNodeExtensions.cs" />
+    <Compile Include="DocumentationBuilders\Markdown\NodeWriters\MarkdownTableArgumentWriter.cs" />
+    <Compile Include="DocumentationBuilders\Markdown\NodeWriters\MarkdownTestResultWriter.cs" />
     <Compile Include="DocumentationBuilders\Word\TableOfContentsAdder\PtOpenXmlUtil.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>

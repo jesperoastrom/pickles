@@ -33,15 +33,18 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
         private readonly Configuration configuration;
         private readonly IFileSystem fileSystem;
         private readonly IStreamWriterFactory streamWriterFactory;
+        private readonly MarkdownBreadcrumsWriter breadcrumsWriter;
 
         public MarkdownStructureNodeWriter(
             Configuration configuration,
             IFileSystem fileSystem,
-            IStreamWriterFactory streamWriterFactory)
+            IStreamWriterFactory streamWriterFactory,
+            MarkdownBreadcrumsWriter breadcrumsWriter)
         {
             this.configuration = configuration;
             this.fileSystem = fileSystem;
             this.streamWriterFactory = streamWriterFactory;
+            this.breadcrumsWriter = breadcrumsWriter;
         }
 
         public void WriteNode(GeneralTree<INode> tree)
@@ -53,14 +56,14 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
 
             using (var writer = this.streamWriterFactory.Create(markdownFilePath))
             {
-                tree.WriteBreadcrums(writer);
-                WriteChildLinks(tree, writer);
-                WriteCustomIndexMarkdown(tree, writer);
+                this.breadcrumsWriter.Write(writer, tree);
+                WriteChildLinks(writer, tree);
+                WriteCustomIndexMarkdown(writer, tree);
                 writer.Close();
             }
         }
 
-        private static void WriteCustomIndexMarkdown(GeneralTree<INode> tree, StreamWriter writer)
+        private static void WriteCustomIndexMarkdown(StreamWriter writer, GeneralTree<INode> tree)
         {
             var readMeNodes = tree
                 .ChildNodes
@@ -75,7 +78,7 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
             }
         }
 
-        private static void WriteChildLinks(GeneralTree<INode> tree, StreamWriter writer)
+        private static void WriteChildLinks(StreamWriter writer, GeneralTree<INode> tree)
         {
             foreach (GeneralTree<INode> childTree in tree.ChildNodes.OrderBy(x => x.Data.Name))
             {
@@ -102,6 +105,13 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
         private static void WriteNonStructureChildLink(StreamWriter writer, GeneralTree<INode> childTree)
         {
             INode node = childTree.Data;
+            bool isImageNode = node is ImageNode;
+
+            if (isImageNode)
+            {
+                return;
+            }
+
             string nodeNameAndExtension = node.GetOriginalNameAndExtension();
             writer.WriteLine($"* [{node.Name}]({nodeNameAndExtension})");
         }

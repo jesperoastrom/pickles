@@ -25,7 +25,7 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
 {
     public class MarkdownMarkdownNodeWriter
     {
-        public void Write(MarkdownNode markdownNode, StreamWriter writer)
+        public void Write(StreamWriter writer, MarkdownNode markdownNode)
         {
             writer.Write(markdownNode.MarkdownOriginalContent);
         }
