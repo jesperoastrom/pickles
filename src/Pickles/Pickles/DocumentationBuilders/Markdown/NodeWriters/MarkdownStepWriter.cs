@@ -25,7 +25,9 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
 
             if (!string.IsNullOrEmpty(step.DocStringArgument))
             {
-                writer.Write(step.DocStringArgument);
+                writer.WriteLine("```");
+                writer.WriteLine(step.DocStringArgument);
+                writer.WriteLine("```");
             }
         }
     }
