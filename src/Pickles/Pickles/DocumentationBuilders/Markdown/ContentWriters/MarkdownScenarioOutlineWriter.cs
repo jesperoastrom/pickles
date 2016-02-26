@@ -9,17 +9,20 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
         private readonly MarkdownDescriptionWriter descriptionWriter;
         private readonly MarkdownTestResultWriter testResultWriter;
         private readonly MarkdownStepWriter stepWriter;
+        private readonly MarkdownExampleWriter exampleWriter;
 
         public MarkdownScenarioOutlineWriter(
             MarkdownFeatureTagsWriter tagsWriter,
             MarkdownDescriptionWriter descriptionWriter,
             MarkdownTestResultWriter testResultWriter,
-            MarkdownStepWriter stepWriter)
+            MarkdownStepWriter stepWriter, 
+            MarkdownExampleWriter exampleWriter)
         {
             this.tagsWriter = tagsWriter;
             this.descriptionWriter = descriptionWriter;
             this.testResultWriter = testResultWriter;
             this.stepWriter = stepWriter;
+            this.exampleWriter = exampleWriter;
         }
 
         public void Write(StreamWriter writer, ScenarioOutline scenarioOutline)
@@ -31,6 +34,11 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
             foreach (Step step in scenarioOutline.Steps)
             {
                 this.stepWriter.Write(writer, step);
+            }
+
+            foreach (var example in scenarioOutline.Examples)
+            {
+                this.exampleWriter.Write(writer, example);
             }
         }
     }

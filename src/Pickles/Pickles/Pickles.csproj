@@ -146,6 +146,7 @@
     <Compile Include="DocumentationBuilders\JSON\JsonTable.cs" />
     <Compile Include="DocumentationBuilders\JSON\JsonTableRow.cs" />
     <Compile Include="DocumentationBuilders\JSON\JsonTestResult.cs" />
+    <Compile Include="DocumentationBuilders\Markdown\ContentWriters\MarkdownExampleWriter.cs" />
     <Compile Include="DocumentationBuilders\Markdown\IMarkdownNodeWriter.cs" />
     <Compile Include="DocumentationBuilders\Markdown\MarkdownCleaner.cs" />
     <Compile Include="DocumentationBuilders\Markdown\ContentWriters\MarkdownBreadcrumsWriter.cs" />
