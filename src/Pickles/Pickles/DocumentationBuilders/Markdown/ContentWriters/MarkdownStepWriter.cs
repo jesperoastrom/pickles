@@ -5,11 +5,11 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
 {
     public class MarkdownStepWriter
     {
-        private readonly MarkdownTableArgumentWriter tableArgumentWriter;
+        private readonly MarkdownTableWriter tableWriter;
 
-        public MarkdownStepWriter(MarkdownTableArgumentWriter tableArgumentWriter)
+        public MarkdownStepWriter(MarkdownTableWriter tableWriter)
         {
-            this.tableArgumentWriter = tableArgumentWriter;
+            this.tableWriter = tableWriter;
         }
 
         public void Write(StreamWriter writer, Step step)
@@ -21,7 +21,7 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
 
             if (step.TableArgument != null)
             {
-                this.tableArgumentWriter.Write(writer, step.TableArgument);
+                this.tableWriter.Write(writer, step.TableArgument);
             }
 
             if (!string.IsNullOrEmpty(step.DocStringArgument))

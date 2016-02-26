@@ -31,15 +31,15 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
         private readonly MarkdownFeatureTitleWriter titleWriter;
         private readonly MarkdownFeatureTagsWriter tagsWriter;
         private readonly MarkdownDescriptionWriter descriptionWriter;
-        private readonly MarkdownFeatureScenarioWriter scenarioWriter;
-        private readonly MarkdownFeatureScenarioOutlineWriter scenarioOutlineWriter;
+        private readonly MarkdownScenarioWriter scenarioWriter;
+        private readonly MarkdownScenarioOutlineWriter scenarioOutlineWriter;
 
         public MarkdownFeatureNodeWriter(
             MarkdownFeatureTitleWriter titleWriter,
             MarkdownFeatureTagsWriter tagsWriter,
             MarkdownDescriptionWriter descriptionWriter,
-            MarkdownFeatureScenarioWriter scenarioWriter,
-            MarkdownFeatureScenarioOutlineWriter scenarioOutlineWriter)
+            MarkdownScenarioWriter scenarioWriter,
+            MarkdownScenarioOutlineWriter scenarioOutlineWriter)
         {
             this.titleWriter = titleWriter;
             this.tagsWriter = tagsWriter;

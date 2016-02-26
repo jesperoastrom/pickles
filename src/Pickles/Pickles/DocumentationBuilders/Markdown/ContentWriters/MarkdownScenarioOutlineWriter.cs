@@ -3,14 +3,14 @@ using PicklesDoc.Pickles.ObjectModel;
 
 namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
 {
-    public class MarkdownFeatureScenarioWriter
+    public class MarkdownScenarioOutlineWriter
     {
         private readonly MarkdownFeatureTagsWriter tagsWriter;
         private readonly MarkdownDescriptionWriter descriptionWriter;
         private readonly MarkdownTestResultWriter testResultWriter;
         private readonly MarkdownStepWriter stepWriter;
 
-        public MarkdownFeatureScenarioWriter(
+        public MarkdownScenarioOutlineWriter(
             MarkdownFeatureTagsWriter tagsWriter,
             MarkdownDescriptionWriter descriptionWriter,
             MarkdownTestResultWriter testResultWriter,
@@ -22,14 +22,13 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
             this.stepWriter = stepWriter;
         }
 
-        public void Write(StreamWriter writer, Scenario scenario)
+        public void Write(StreamWriter writer, ScenarioOutline scenarioOutline)
         {
-            writer.WriteLine($"### {scenario.Name}");
-            this.tagsWriter.Write(writer, scenario.Tags);
-            this.descriptionWriter.Write(writer, scenario.Description);
-            this.testResultWriter.Write(writer, scenario);
+            writer.WriteLine($"### {scenarioOutline.Name}");
+            this.tagsWriter.Write(writer, scenarioOutline.Tags);
+            this.descriptionWriter.Write(writer, scenarioOutline.Description);
 
-            foreach (Step step in scenario.Steps)
+            foreach (Step step in scenarioOutline.Steps)
             {
                 this.stepWriter.Write(writer, step);
             }
