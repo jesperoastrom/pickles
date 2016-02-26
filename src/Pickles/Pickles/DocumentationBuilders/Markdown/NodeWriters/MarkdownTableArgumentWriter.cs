@@ -5,11 +5,33 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
 {
     public class MarkdownTableArgumentWriter
     {
+        private const char TableSeparator = '|';
+        private const string TableHeaderSeparatorCellContent = " ---: ";
+
         public void Write(StreamWriter writer, Table tableArgument)
         {
+            Write(writer, tableArgument.HeaderRow);
+            writer.WriteLine();
+
+            WriteHeaderSeparator(writer, tableArgument.HeaderRow);
+            writer.WriteLine();
+
             foreach (TableRow tableRow in tableArgument.DataRows)
             {
                 Write(writer, tableRow);
+                writer.WriteLine();
+            }
+        }
+
+        private static void WriteHeaderSeparator(StreamWriter writer, TableRow headerRow)
+        {
+            for (int index = 0; index < headerRow.Cells.Count; index++)
+            {
+                Write(writer, TableHeaderSeparatorCellContent);
+            }
+            if (headerRow.Cells.Count > 0)
+            {
+                writer.Write($" {TableSeparator}");
             }
         }
 
@@ -19,11 +41,16 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
             {
                 Write(writer, cell);
             }
+            if (tableRow.Cells.Count > 0)
+            {
+                writer.Write($" {TableSeparator}");
+            }
         }
 
         private static void Write(StreamWriter writer, string cell)
         {
-            writer.WriteLine(cell);
+            writer.Write($"{TableSeparator} ");
+            writer.Write(cell);
         }
     }
 }
