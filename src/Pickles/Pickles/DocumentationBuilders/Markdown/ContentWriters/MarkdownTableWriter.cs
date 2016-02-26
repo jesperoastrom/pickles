@@ -29,6 +29,7 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
             {
                 Write(writer, TableHeaderSeparatorCellContent);
             }
+
             if (headerRow.Cells.Count > 0)
             {
                 writer.Write($" {TableSeparator}");
@@ -41,6 +42,7 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
             {
                 Write(writer, cell);
             }
+
             if (tableRow.Cells.Count > 0)
             {
                 writer.Write($" {TableSeparator}");

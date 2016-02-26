@@ -20,10 +20,12 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
             if (this.configuration.HasTestResults)
             {
                 TestResult scenarioResult = this.results.GetScenarioResult(scenario);
+
                 if (scenarioResult.WasExecuted == false)
                 {
                     writer.WriteLine("Test: __not run__");
                 }
+
                 if (scenarioResult.WasSuccessful)
                 {
                     writer.WriteLine("Test: ##ok##");

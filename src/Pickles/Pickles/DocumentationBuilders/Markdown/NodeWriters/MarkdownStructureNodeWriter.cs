@@ -1,5 +1,5 @@
 //  --------------------------------------------------------------------------------------------------------------------
-//  <copyright file="WhenResolvingADocumentationBuilder.cs" company="PicklesDoc">
+//  <copyright file="MarkdownStructureNodeWriter.cs" company="PicklesDoc">
 //  Copyright 2011 Jeffrey Cameron
 //  Copyright 2012-present PicklesDoc team and community contributors
 //

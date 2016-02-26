@@ -38,6 +38,5 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
                 writer.Write("..\\");
             }
         }
-
     }
 }
