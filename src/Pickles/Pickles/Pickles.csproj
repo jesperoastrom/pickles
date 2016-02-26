@@ -148,7 +148,7 @@
     <Compile Include="DocumentationBuilders\JSON\JsonTestResult.cs" />
     <Compile Include="DocumentationBuilders\Markdown\IMarkdownNodeWriter.cs" />
     <Compile Include="DocumentationBuilders\Markdown\NodeWriters\MarkdownBreadcrumsWriter.cs" />
-    <Compile Include="DocumentationBuilders\Markdown\NodeWriters\MarkdownFeatureScenarioOUtlineWriter.cs" />
+    <Compile Include="DocumentationBuilders\Markdown\NodeWriters\MarkdownFeatureScenarioOutlineWriter.cs" />
     <Compile Include="DocumentationBuilders\Markdown\NodeWriters\MarkdownFeatureScenarioWriter.cs" />
     <Compile Include="DocumentationBuilders\Markdown\NodeWriters\MarkdownDescriptionWriter.cs" />
     <Compile Include="DocumentationBuilders\Markdown\NodeWriters\MarkdownFeatureTitleWriter.cs" />
