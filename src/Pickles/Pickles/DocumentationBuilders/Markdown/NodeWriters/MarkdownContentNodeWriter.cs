@@ -22,6 +22,7 @@ using System;
 using System.IO.Abstractions;
 using NGenerics.DataStructures.Trees;
 using PicklesDoc.Pickles.DirectoryCrawler;
+using PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters;
 using PicklesDoc.Pickles.IO;
 
 namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters

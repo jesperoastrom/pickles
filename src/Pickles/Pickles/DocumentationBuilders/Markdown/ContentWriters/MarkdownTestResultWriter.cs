@@ -2,7 +2,7 @@
 using PicklesDoc.Pickles.ObjectModel;
 using PicklesDoc.Pickles.TestFrameworks;
 
-namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
+namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
 {
     public class MarkdownTestResultWriter
     {

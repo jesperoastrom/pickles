@@ -1,7 +1,7 @@
 using System.IO;
 using PicklesDoc.Pickles.ObjectModel;
 
-namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
+namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
 {
     public class MarkdownTableArgumentWriter
     {

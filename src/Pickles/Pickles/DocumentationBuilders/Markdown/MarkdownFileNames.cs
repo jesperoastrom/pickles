@@ -18,7 +18,7 @@
 //  </copyright>
 //  --------------------------------------------------------------------------------------------------------------------
 
-namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
+namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown
 {
     public static class MarkdownFilenames
     {

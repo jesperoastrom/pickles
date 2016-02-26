@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
+namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
 {
     public class MarkdownDescriptionWriter
     {

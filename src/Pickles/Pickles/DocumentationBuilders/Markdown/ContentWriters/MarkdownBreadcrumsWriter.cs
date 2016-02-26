@@ -3,7 +3,7 @@ using System.IO;
 using NGenerics.DataStructures.Trees;
 using PicklesDoc.Pickles.DirectoryCrawler;
 
-namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
+namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
 {
     public class MarkdownBreadcrumsWriter
     {

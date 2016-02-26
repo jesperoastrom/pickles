@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
+namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
 {
     public class MarkdownFeatureTitleWriter
     {

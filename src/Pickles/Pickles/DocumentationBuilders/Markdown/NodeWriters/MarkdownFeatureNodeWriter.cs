@@ -21,6 +21,7 @@
 using System;
 using System.IO;
 using PicklesDoc.Pickles.DirectoryCrawler;
+using PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters;
 using PicklesDoc.Pickles.ObjectModel;
 
 namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
