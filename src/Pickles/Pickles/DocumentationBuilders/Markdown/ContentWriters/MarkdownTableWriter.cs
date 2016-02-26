@@ -10,17 +10,18 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
 
         public void Write(StreamWriter writer, Table tableArgument)
         {
-            Write(writer, tableArgument.HeaderRow);
             writer.WriteLine();
 
+            Write(writer, tableArgument.HeaderRow);
+
             WriteHeaderSeparator(writer, tableArgument.HeaderRow);
-            writer.WriteLine();
 
             foreach (TableRow tableRow in tableArgument.DataRows)
             {
                 Write(writer, tableRow);
-                writer.WriteLine();
             }
+
+            writer.WriteLine();
         }
 
         private static void WriteHeaderSeparator(StreamWriter writer, TableRow headerRow)
@@ -32,7 +33,7 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
 
             if (headerRow.Cells.Count > 0)
             {
-                writer.Write($" {TableSeparator}");
+                writer.WriteLine($" {TableSeparator}  ");
             }
         }
 
@@ -45,7 +46,7 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
 
             if (tableRow.Cells.Count > 0)
             {
-                writer.Write($" {TableSeparator}");
+                writer.WriteLine($" {TableSeparator}  ");
             }
         }
 

@@ -17,7 +17,7 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
             writer.Write($"__{step.NativeKeyword.Trim()}__ ");
 
             var name = MarkdownCleaner.CleanContent(step.Name);
-            writer.WriteLine($" {name}");
+            writer.WriteLine($" {name}  ");
 
             if (step.TableArgument != null)
             {

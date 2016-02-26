@@ -24,7 +24,7 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
         private static string Format(string description)
         {
             string singleNewLineDescription = MultipleNewLinesRegEx.Replace(description, "\n");
-            return string.Join("\n\r", singleNewLineDescription.Split('\n').Select(s => s.Trim()));
+            return string.Join("  \n", singleNewLineDescription.Split('\n').Select(s => s.Trim()));
         }
     }
 }

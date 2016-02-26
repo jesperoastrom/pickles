@@ -29,7 +29,7 @@ namespace PicklesDoc.Pickles.IO
         {
             return new StreamWriter(filePath, false, Encoding.UTF8)
             {
-                NewLine = "\n\r"
+                NewLine = "\n"
             };
         }
     }
