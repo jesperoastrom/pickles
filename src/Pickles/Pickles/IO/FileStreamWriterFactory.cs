@@ -27,7 +27,10 @@ namespace PicklesDoc.Pickles.IO
     {
         public StreamWriter Create(string filePath)
         {
-            return new StreamWriter(filePath, false, Encoding.UTF8);
+            return new StreamWriter(filePath, false, Encoding.UTF8)
+            {
+                NewLine = "\n\r"
+            };
         }
     }
 }

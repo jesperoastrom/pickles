@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using PicklesDoc.Pickles.ObjectModel;
 
@@ -15,8 +16,9 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
         public void Write(StreamWriter writer, Step step)
         {
             writer.Write($"__{step.NativeKeyword.Trim()}__ ");
-            writer.WriteLine($" {step.Name}");
-            writer.WriteLine();
+
+            var name = MarkdownCleaner.CleanContent(step.Name);
+            writer.WriteLine($" {name}");
 
             if (step.TableArgument != null)
             {

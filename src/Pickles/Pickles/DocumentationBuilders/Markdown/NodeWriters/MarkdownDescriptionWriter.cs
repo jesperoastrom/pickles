@@ -15,7 +15,8 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
                 return;
             }
 
-            string formattedDescription = Format(description);
+            string cleanedDescription = MarkdownCleaner.CleanContent(description);
+            string formattedDescription = Format(cleanedDescription);
 
             writer.WriteLine(formattedDescription);
         }
@@ -23,7 +24,7 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
         private static string Format(string description)
         {
             string singleNewLineDescription = MultipleNewLinesRegEx.Replace(description, "\n");
-            return string.Join("\n\n", singleNewLineDescription.Split('\n').Select(s => s.Trim()));
+            return string.Join("\n\r", singleNewLineDescription.Split('\n').Select(s => s.Trim()));
         }
     }
 }
