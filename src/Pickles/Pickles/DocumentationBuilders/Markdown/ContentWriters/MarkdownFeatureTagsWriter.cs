@@ -1,11 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using PicklesDoc.Pickles.DocumentationBuilders.Markdown.Formatters;
 
 namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
 {
     public class MarkdownFeatureTagsWriter
     {
+        private readonly IMarkdownFormatter formatter;
+
+        public MarkdownFeatureTagsWriter(IMarkdownFormatter formatter)
+        {
+            this.formatter = formatter;
+        }
+
         public void Write(StreamWriter writer, List<string> tags)
         {
             if (tags == null || tags.Count == 0)
@@ -17,15 +25,22 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
                 .OrderBy(tag => tag)
                 .ToArray();
 
-            writer.Write("**_");
+            int lastTagIndex = orderedTags.Length - 1;
 
-            foreach (string tag in orderedTags)
+            for (int index = 0; index < orderedTags.Length; index++)
             {
-                writer.Write($"{tag} ");
+                string tag = orderedTags[index];
+                string italic = this.formatter.FormatItalic(tag);
+                writer.Write(italic);
+
+                bool isLast = index == lastTagIndex;
+                if (!isLast)
+                {
+                    writer.Write(" ");
+                }
             }
 
-            writer.WriteLine("_**");
-            writer.WriteLine();
+            writer.WriteLine(this.formatter.FormatEndOfLine());
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using PicklesDoc.Pickles.DocumentationBuilders.Markdown.Formatters;
 using PicklesDoc.Pickles.ObjectModel;
 
 namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
@@ -10,26 +11,32 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
         private readonly MarkdownTestResultWriter testResultWriter;
         private readonly MarkdownStepWriter stepWriter;
         private readonly MarkdownExampleWriter exampleWriter;
+        private readonly IMarkdownFormatter formatter;
 
         public MarkdownScenarioOutlineWriter(
             MarkdownFeatureTagsWriter tagsWriter,
             MarkdownDescriptionWriter descriptionWriter,
             MarkdownTestResultWriter testResultWriter,
             MarkdownStepWriter stepWriter, 
-            MarkdownExampleWriter exampleWriter)
+            MarkdownExampleWriter exampleWriter,
+            IMarkdownFormatter formatter)
         {
             this.tagsWriter = tagsWriter;
             this.descriptionWriter = descriptionWriter;
             this.testResultWriter = testResultWriter;
             this.stepWriter = stepWriter;
             this.exampleWriter = exampleWriter;
+            this.formatter = formatter;
         }
 
         public void Write(StreamWriter writer, ScenarioOutline scenarioOutline)
         {
-            writer.WriteLine($"### {scenarioOutline.Name}");
+            string header = this.formatter.FormatH3(scenarioOutline.Name);
+            writer.WriteLine(header);
+
             this.tagsWriter.Write(writer, scenarioOutline.Tags);
             this.descriptionWriter.Write(writer, scenarioOutline.Description);
+            this.testResultWriter.Write(writer, scenarioOutline);
 
             foreach (Step step in scenarioOutline.Steps)
             {

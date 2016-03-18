@@ -24,6 +24,7 @@ using System.Linq;
 using NGenerics.DataStructures.Trees;
 using PicklesDoc.Pickles.DirectoryCrawler;
 using PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters;
+using PicklesDoc.Pickles.DocumentationBuilders.Markdown.Formatters;
 using PicklesDoc.Pickles.Extensions;
 using PicklesDoc.Pickles.IO;
 
@@ -34,17 +35,20 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
         private readonly Configuration configuration;
         private readonly IFileSystem fileSystem;
         private readonly IStreamWriterFactory streamWriterFactory;
+        private readonly IMarkdownFormatter formatter;
         private readonly MarkdownBreadcrumsWriter breadcrumsWriter;
 
         public MarkdownStructureNodeWriter(
             Configuration configuration,
             IFileSystem fileSystem,
             IStreamWriterFactory streamWriterFactory,
+            IMarkdownFormatter formatter,
             MarkdownBreadcrumsWriter breadcrumsWriter)
         {
             this.configuration = configuration;
             this.fileSystem = fileSystem;
             this.streamWriterFactory = streamWriterFactory;
+            this.formatter = formatter;
             this.breadcrumsWriter = breadcrumsWriter;
         }
 
@@ -58,7 +62,7 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
             using (var writer = this.streamWriterFactory.Create(markdownFilePath))
             {
                 this.breadcrumsWriter.Write(writer, tree);
-                WriteChildLinks(writer, tree);
+                this.WriteChildLinks(writer, tree);
                 WriteCustomIndexMarkdown(writer, tree);
                 writer.Close();
             }
@@ -79,31 +83,31 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
             }
         }
 
-        private static void WriteChildLinks(StreamWriter writer, GeneralTree<INode> tree)
+        private void WriteChildLinks(StreamWriter writer, GeneralTree<INode> tree)
         {
             foreach (GeneralTree<INode> childTree in tree.ChildNodes.OrderBy(x => x.Data.Name))
             {
-                if (childTree.Data.IsIndexMarkDownNode() == false)
+                if (!childTree.Data.IsIndexMarkDownNode())
                 {
-                    WriteChildLink(writer, childTree);
+                    this.WriteChildLink(writer, childTree);
                 }
             }
         }
 
-        private static void WriteChildLink(StreamWriter writer, GeneralTree<INode> childTree)
+        private void WriteChildLink(StreamWriter writer, GeneralTree<INode> childTree)
         {
             INode node = childTree.Data;
             if (node.NodeType == NodeType.Structure)
             {
-                WriteStructureChildLink(writer, childTree);
+                this.WriteStructureChildLink(writer, childTree);
             }
             else
             {
-                WriteNonStructureChildLink(writer, childTree);
+                this.WriteNonStructureChildLink(writer, childTree);
             }
         }
 
-        private static void WriteNonStructureChildLink(StreamWriter writer, GeneralTree<INode> childTree)
+        private void WriteNonStructureChildLink(StreamWriter writer, GeneralTree<INode> childTree)
         {
             INode node = childTree.Data;
             bool isImageNode = node is ImageNode;
@@ -114,13 +118,17 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.NodeWriters
             }
 
             string nodeNameAndExtension = node.GetOriginalNameAndExtension();
-            writer.WriteLine($"* [{node.Name}]({nodeNameAndExtension})");
+            string link = this.formatter.FormatLink(node.Name, nodeNameAndExtension);
+            string listItem = this.formatter.FormatListItem(link);
+            writer.WriteLine(listItem);
         }
 
-        private static void WriteStructureChildLink(StreamWriter writer, GeneralTree<INode> childTree)
+        private void WriteStructureChildLink(StreamWriter writer, GeneralTree<INode> childTree)
         {
             INode node = childTree.Data;
-            writer.WriteLine($"* [{node.Name}]({node.OriginalLocation.Name}\\{MarkdownFilenames.Index})");
+            string link = this.formatter.FormatLink(node.Name, $"{node.OriginalLocation.Name}\\{MarkdownFilenames.Index}");
+            string listItem = this.formatter.FormatListItem(link);
+            writer.WriteLine(listItem);
         }
     }
 }

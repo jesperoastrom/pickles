@@ -1,12 +1,22 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using NGenerics.DataStructures.Trees;
 using PicklesDoc.Pickles.DirectoryCrawler;
+using PicklesDoc.Pickles.DocumentationBuilders.Markdown.Formatters;
 
 namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
 {
     public class MarkdownBreadcrumsWriter
     {
+        private readonly IMarkdownFormatter formatter;
+
+        public MarkdownBreadcrumsWriter(IMarkdownFormatter formatter)
+        {
+            this.formatter = formatter;
+        }
+
         public void Write(StreamWriter writer, GeneralTree<INode> tree)
         {
             IList<GeneralTree<INode>> path = tree.GetPath();
@@ -14,28 +24,22 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
             {
                 GeneralTree<INode> parentTree = path[index];
                 INode node = parentTree.Data;
-                var numberOfBackSlashes = tree.Data.NodeType == NodeType.Structure
+                var numberOfBackslashes = tree.Data.NodeType == NodeType.Structure
                     ? path.Count - index
                     : path.Count - index - 1;
 
-                writer.Write($"/ [{node.Name}](");
-                WriteBackSlashes(numberOfBackSlashes, writer);
-                writer.Write($"{MarkdownFilenames.Index}) ");
+                string backslashes = string.Concat(Enumerable.Repeat("..\\", numberOfBackslashes));
+                string linkPath = $"{backslashes}{MarkdownFilenames.Index}";
+                string link = this.formatter.FormatLink(node.Name, linkPath);
+
+                writer.Write($"/ ");
+                writer.Write(link);
 
                 bool isLastNode = index == path.Count - 1;
                 if (isLastNode)
                 {
-                    writer.WriteLine();
-                    writer.WriteLine();
+                    writer.WriteLine(this.formatter.FormatEndOfLine());
                 }
-            }
-        }
-
-        private static void WriteBackSlashes(int n, StreamWriter writer)
-        {
-            for (int i = 0; i < n; i++)
-            {
-                writer.Write("..\\");
             }
         }
     }

@@ -82,7 +82,7 @@ namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown
         {
             GeneralTree<INode>[] childNodesExceptReadme = tree
                 .ChildNodes
-                .Where(x => x.Data.IsIndexMarkDownNode() == false)
+                .Where(x => !x.Data.IsIndexMarkDownNode())
                 .ToArray();
 
             foreach (GeneralTree<INode> subtree in childNodesExceptReadme)

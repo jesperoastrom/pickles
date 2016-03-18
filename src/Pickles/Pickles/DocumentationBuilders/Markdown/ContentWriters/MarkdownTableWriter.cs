@@ -1,59 +1,44 @@
 using System.IO;
+using PicklesDoc.Pickles.DocumentationBuilders.Markdown.Formatters;
 using PicklesDoc.Pickles.ObjectModel;
 
 namespace PicklesDoc.Pickles.DocumentationBuilders.Markdown.ContentWriters
 {
     public class MarkdownTableWriter
     {
-        private const char TableSeparator = '|';
-        private const string TableHeaderSeparatorCellContent = " ---: ";
+        private readonly IMarkdownFormatter formatter;
+
+        public MarkdownTableWriter(IMarkdownFormatter formatter)
+        {
+            this.formatter = formatter;
+        }
 
         public void Write(StreamWriter writer, Table tableArgument)
         {
             writer.WriteLine();
 
-            Write(writer, tableArgument.HeaderRow);
+            this.WriteTableRow(writer, tableArgument.HeaderRow);
 
-            WriteHeaderSeparator(writer, tableArgument.HeaderRow);
+            this.WriteHeaderSeparator(writer, tableArgument.HeaderRow);
 
             foreach (TableRow tableRow in tableArgument.DataRows)
             {
-                Write(writer, tableRow);
+                this.WriteTableRow(writer, tableRow);
             }
 
             writer.WriteLine();
         }
 
-        private static void WriteHeaderSeparator(StreamWriter writer, TableRow headerRow)
+        private void WriteHeaderSeparator(StreamWriter writer, TableRow headerRow)
         {
-            for (int index = 0; index < headerRow.Cells.Count; index++)
-            {
-                Write(writer, TableHeaderSeparatorCellContent);
-            }
-
-            if (headerRow.Cells.Count > 0)
-            {
-                writer.WriteLine($" {TableSeparator}  ");
-            }
+            string separator = this.formatter.FormatTableHeaderSeparator(headerRow.Cells.Count);
+            writer.Write(separator);
         }
 
-        private static void Write(StreamWriter writer, TableRow tableRow)
+        private void WriteTableRow(StreamWriter writer, TableRow tableRow)
         {
-            foreach (var cell in tableRow.Cells)
-            {
-                Write(writer, cell);
-            }
-
-            if (tableRow.Cells.Count > 0)
-            {
-                writer.WriteLine($" {TableSeparator}  ");
-            }
-        }
-
-        private static void Write(StreamWriter writer, string cell)
-        {
-            writer.Write($"{TableSeparator} ");
-            writer.Write(cell);
+            string row = this.formatter.FormatTableRow(tableRow);
+            writer.Write(row);
         }
     }
 }
